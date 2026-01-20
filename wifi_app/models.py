@@ -6,6 +6,8 @@ from datetime import timedelta
 class Payment(models.Model):
     phone = models.CharField(max_length=20)
     amount = models.IntegerField()
+    commune = models.CharField(max_length=50, blank=True, null=True)
+    router_name = models.CharField(max_length=50, blank=True, null=True)
     status = models.CharField(max_length=10, choices=[("PENDING","Pending"),("SUCCESS","Success")])
     mac = models.CharField(max_length=17, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -18,6 +20,8 @@ class WifiSession(models.Model):
     mac_address = models.CharField(max_length=17, unique=True)
     amount = models.IntegerField()
     start_time = models.DateTimeField(auto_now_add=True)
+    commune = models.CharField(max_length=50, blank=True, null=True)
+    router_name = models.CharField(max_length=50, blank=True, null=True)
     end_time = models.DateTimeField()
     is_active = models.BooleanField(default=False)
 

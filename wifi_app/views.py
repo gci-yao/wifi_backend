@@ -12,6 +12,8 @@ from .models import Payment, WifiSession
 def init_wave_payment(request):
     phone = request.data.get("phone")
     amount = request.data.get("amount")
+    commune = request.data.get("commune")
+    router_name = request.data.get("router_name")
 
     if not phone:
         return Response({"error": "Le numéro de téléphone est obligatoire."}, status=400)
@@ -22,7 +24,8 @@ def init_wave_payment(request):
     import time
     mac = f"AA:BB:CC:{int(time.time())%100:02}:{int(time.time()*3)%100:02}:{int(time.time()*7)%100:02}"
 
-    payment = Payment.objects.create(phone=phone, amount=amount, status="PENDING", mac=mac)
+    payment = Payment.objects.create(phone=phone, amount=amount, status="PENDING", mac=mac, commune=commune,router_name=router_name)
+    
 
     # Lien Wave marchand réel
     wave_url = f"https://pay.wave.com/m/M_ci_rpkTnEMdLOa-/c/ci/?amount={amount}&mac={mac}&phone={phone}"
@@ -48,7 +51,9 @@ def confirm_payment(request):
         mac_address=payment.mac,
         amount=payment.amount,
         end_time=now() + timedelta(hours=hours),
-        is_active=True
+        is_active=True,
+        commune=payment.commune,
+        router_name=payment.router_name
     )
 
     # Appel MikroTik API pour autoriser le MAC
