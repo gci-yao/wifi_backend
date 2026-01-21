@@ -8,7 +8,7 @@ class Payment(models.Model):
     amount = models.IntegerField()
     commune = models.CharField(max_length=50, blank=True, null=True)
     router_name = models.CharField(max_length=50, blank=True, null=True)
-    status = models.CharField(max_length=10, choices=[("PENDING","Pending"),("SUCCESS","Success")])
+    status = models.CharField(max_length=10, choices=[("PENDING","Pending"),("SUCCESS","Success"),("FAILED","Failed")])
     mac = models.CharField(max_length=17, unique=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
