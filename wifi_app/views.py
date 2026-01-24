@@ -136,3 +136,24 @@ def check_access(request):
     return Response({
         "access": bool(session)
     })
+
+
+
+@api_view(['GET'])
+def session_detail(request):
+    mac = request.GET.get("mac")
+    session = WifiSession.objects.filter(mac_address=mac).first()
+    if not session:
+        return Response({"status": "invalid"})
+
+    remaining_seconds = max(0, int((session.end_time - now()).total_seconds()))
+
+    return Response({
+        "status": "active" if session.is_active and remaining_seconds > 0 else "expired",
+        "phone": session.phone,
+        "amount": session.amount,
+        "commune": session.commune,
+        "router_name": session.router_name,
+        "end_time": session.end_time,
+        "remaining_seconds": remaining_seconds,
+    })

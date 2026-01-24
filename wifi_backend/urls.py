@@ -38,6 +38,8 @@ urlpatterns = [
     path('api/payment/init_wave/', views.init_wave_payment),
     path('api/payment/confirm/', views.confirm_payment),
     path('api/payment/check_access/', views.check_access),
+    path('api/payment/session_detail/', views.session_detail),
+
 ]
 
 
